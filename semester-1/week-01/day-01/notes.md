@@ -79,3 +79,60 @@ Mutable vs immutable objects
 How Python stores objects in memory
 Shallow copy vs deep copy
 How function arguments behave
+
+---
+
+## 7. Control Flow
+
+### Comparison Operators
+
+Comparison operators return a Boolean value:
+
+```python
+==    # equal
+!=    # not equal
+>     # greater than
+<     # less than
+>=    # greater than or equal
+<=    # less than or equal
+
+Boolean Operators
+and
+or
+not
+
+and → all conditions must be True
+or → at least one condition must be True
+not → reverses a Boolean value
+
+if / elif / else
+
+Python uses conditional statements to control which code gets executed.
+
+if condition:
+    # runs when condition is True
+elif another_condition:
+    # runs when the first condition is False
+    # and this condition is True
+else:
+    # runs when all previous conditions are False
+
+Python evaluates an if/elif/else chain from top to bottom and executes
+the first condition that evaluates to True.
+
+Nested if
+
+An if statement can contain another if.
+
+if age >= 18:
+    if has_id:
+        print("Entry allowed")
+The inner condition is evaluated only when the outer condition is True.
+
+Important distinction
+
+= is used for assignment/rebinding.
+
+== is used for equality comparison.
+
+is checks object identity.
