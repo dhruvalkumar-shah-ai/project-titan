@@ -250,3 +250,17 @@ inner else
    ↓
 "ID required"
 """
+
+name = "Dhruval"
+
+print("D" in name)
+print("z" in name)
+print("D" not in name)
+print("z" not in name)
+
+"""
+True; since "D" exists in Dhruval as D is capital
+False; since "z" does not exists in Dhruval
+False; since "D" exists in Dhruval and D is capital
+True; since "z" does not exist in Dhruval
+"""

@@ -136,3 +136,17 @@ Important distinction
 == is used for equality comparison.
 
 is checks object identity.
+
+None is its own distinct object/value representing absence of a value.
+
+Type conversion can create a new value without rebinding the original name.
+
+in
+not in
+These are particularly useful with strings and, later, lists/dictionaries.
+
+since we're using is, I'd phrase the reasoning as:
+
+x refers to the None object.
+
+Rather than "x value is equal to None."
