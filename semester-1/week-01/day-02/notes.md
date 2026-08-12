@@ -984,6 +984,242 @@ employee.get("salary")
 
 when salary may be absent.
 
+# Hashability
+
+Hashability is important because Python's `set` and `dict` rely on hashing
+internally for efficient lookup.
+
+## What is a hash?
+
+A hash is an integer value produced from an object by Python's `hash()` function.
+
+```python
+hash(10)
+hash("Python")
+hash((1, 2, 3))
+
+
+An object is hashable when it can provide a stable hash value and satisfies
+the equality/hash contract required by Python's hash-based collections.
+
+Why Sets and Dictionaries Need Hashing
+
+Sets use hashing for membership operations:
+
+skills = {"Python", "SQL", "PySpark"}
+
+"Python" in skills
+
+Dictionaries use hashing for key lookup:
+
+employee = {
+    "E001": "Alice",
+    "E002": "Bob"
+}
+
+employee["E002"]
+
+Conceptually:
+
+Object / Key
+     ↓
+  hash(...)
+     ↓
+Hash-table location
+     ↓
+Candidate value
+     ↓
+Equality check
+
+This is why set membership and dictionary key lookup are generally
+O(1) average-case operations.
+
+Hashable vs Unhashable Objects
+
+Common hashable built-in types:
+
+int       → hashable
+float     → hashable
+str       → hashable
+bool      → hashable
+tuple     → conditionally hashable
+frozenset → hashable
+
+Common unhashable built-in containers:
+
+list       → unhashable
+set        → unhashable
+dict       → unhashable
+
+We can verify hashability with:
+
+hash(10)
+hash("Python")
+hash((1, 2, 3))
+
+An unhashable object raises:
+
+TypeError: unhashable type: ...
+Why Mutable Objects Are Generally Unhashable
+
+Consider a list:
+
+numbers = [1, 2, 3]
+
+Its contents can change:
+
+numbers.append(4)
+
+If a mutable object were used as a dictionary key and its hash/equality
+properties changed after insertion, the hash table could look in the wrong
+location and fail to reliably find the existing key.
+
+Therefore built-in mutable containers such as:
+
+list
+set
+dict
+
+are unhashable.
+
+Important principle:
+
+A hash used by a hash table must remain stable while the object is being
+used as a key/element.
+
+This is primarily about maintaining the correctness of hash-table lookup,
+not about memory management.
+
+Tuple Hashability
+
+A tuple is immutable, but this does not automatically mean every tuple is
+hashable.
+
+A tuple is hashable only when all of its elements are hashable.
+
+Works:
+
+hash((1, 2, 3))
+hash((1, "Python", 3.14))
+
+Fails:
+
+hash((1, [2, 3]))
+
+because the tuple contains a list, and a list is unhashable.
+
+Interview rule
+
+Tuple hashability is determined by the hashability of all elements contained
+inside the tuple.
+
+frozenset
+
+A normal set is mutable:
+
+skills = {"Python", "SQL"}
+
+Therefore:
+
+set → unhashable
+
+frozenset is the immutable counterpart:
+
+skills = frozenset({"Python", "SQL"})
+
+A frozenset is hashable and can therefore be used as:
+
+a dictionary key
+an element inside another set
+
+Example:
+
+data = {
+    frozenset({"Python", "SQL"}): "Data Engineering"
+}
+
+Conceptually:
+
+set
+ ↓
+mutable
+ ↓
+unhashable
+
+frozenset
+ ↓
+immutable
+ ↓
+hashable
+Hashability and Equality
+
+An important hash-table invariant is:
+
+If a == b
+then hash(a) == hash(b)
+
+Example:
+
+a = 10
+b = 10
+
+print(a == b)
+print(hash(a) == hash(b))
+
+Both comparisons are True.
+
+Important asymmetry
+
+The reverse is NOT guaranteed:
+
+hash(a) == hash(b)
+
+does not necessarily mean:
+
+a == b
+
+Different objects can have the same hash value. This is called a
+hash collision.
+
+Therefore:
+
+Equality
+   ↓
+must imply
+   ↓
+same hash
+
+Same hash
+   ↓
+does NOT necessarily imply
+   ↓
+equality
+
+
+Hashability Mental Model
+             Hashable?
+                 │
+        ┌────────┴────────┐
+        │                 │
+       YES                NO
+        │                 │
+        ↓                 ↓
+Can participate       Cannot directly
+in hash-based         be used as:
+collections           dict key / set element
+        │
+        ↓
+Dictionary key
+or
+Set element
+Core takeaway
+
+Hashability is a prerequisite for being used as a dictionary key or as an
+element of a set.
+
+
+
+
 ---
 
 ## 5. Think in state transitions
